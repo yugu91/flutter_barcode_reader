@@ -12,15 +12,17 @@
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"scan" isEqualToString:call.method]) {
+        NSDictionary* arg = call.arguments;
         self.result = result;
-        [self showBarcodeView];
+        [self showBarcodeView:arg];
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
 
-- (void)showBarcodeView {
+- (void)showBarcodeView:(NSDictionary*)arg{
     BarcodeScannerViewController *scannerViewController = [[BarcodeScannerViewController alloc] init];
+    scannerViewController.arg = arg;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:scannerViewController];
     scannerViewController.delegate = self;
     [self.hostViewController presentViewController:navigationController animated:NO completion:nil];

@@ -6,8 +6,8 @@ PODS:
   - MTBBarcodeScanner (5.0.11)
 
 DEPENDENCIES:
-  - barcode_scan (from `/Users/matthew/AppTree/plugins/barcode_scan/ios`)
-  - Flutter (from `/Users/matthew/Library/flutter/bin/cache/artifacts/engine/ios`)
+  - "barcode_scan (from `/Users/zhongyi/项目/支付项目/flutter_barcode_reader/ios`)"
+  - Flutter (from `/Users/zhongyi/flutter/bin/cache/artifacts/engine/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -15,15 +15,15 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   barcode_scan:
-    :path: "/Users/matthew/AppTree/plugins/barcode_scan/ios"
+    :path: "/Users/zhongyi/项目/支付项目/flutter_barcode_reader/ios"
   Flutter:
-    :path: "/Users/matthew/Library/flutter/bin/cache/artifacts/engine/ios"
+    :path: "/Users/zhongyi/flutter/bin/cache/artifacts/engine/ios"
 
 SPEC CHECKSUMS:
   barcode_scan: 33f586d02270046fc6559135038b34b5754eaa4f
-  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
 
 PODFILE CHECKSUM: 407db753d18e8726329521f96a8fa0bebaef3f42
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5

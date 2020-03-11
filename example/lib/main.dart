@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      String barcode = await BarcodeScanner.scan(flashOnTxt: "打开闪光灯", flashOffTxt: "关闭闪光灯", cancelTxt: "取消");
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {

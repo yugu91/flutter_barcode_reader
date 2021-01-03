@@ -5,11 +5,16 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.google.zxing.Result
+import com.yourcompany.barcodescan.R
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 
@@ -25,35 +30,61 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.scaner);
+
         title = ""
         scannerView = ZXingScannerView(this)
         scannerView.setAutoFocus(true)
+//        flashOffTxt = this.intent.getStringExtra("flashOffTxt");
+//        flashOnTxt = this.intent.getStringExtra("flashOnTxt");
         // this paramter will make your HUAWEI phone works great!
         scannerView.setAspectTolerance(0.5f)
-        setContentView(scannerView)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (scannerView.flash) {
-            val item = menu.add(0,
-                    TOGGLE_FLASH, 0, "Flash Off")
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        } else {
-            val item = menu.add(0,
-                    TOGGLE_FLASH, 0, "Flash On")
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == TOGGLE_FLASH) {
+        var fl_my_container = this.findViewById<FrameLayout>(R.id.fl_my_container);
+        fl_my_container.addView(scannerView);
+        var lightBT = this.findViewById<LinearLayout>(R.id.scan_light);
+        lightBT.setOnClickListener(View.OnClickListener {
             scannerView.flash = !scannerView.flash
-            this.invalidateOptionsMenu()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
+            if(scannerView.flash)
+                lightBT.alpha = 1.0f;
+            else
+                lightBT.alpha = 0.5f;
+        })
+
+        lightBT.alpha = 0.5f;
+
+            var back = this.findViewById<LinearLayout>(R.id.scan_back);
+        back.setOnClickListener(View.OnClickListener {
+            this.finish();
+        })
     }
+
+    // override fun onCreateOptionsMenu(menu: Menu, inflater:MenuInflater): Boolean {
+    //     inflater.inflate(R.layout.menu, menu)
+    //     var back = menu.findViewById<LinearLayout>(R.id.scan_back);
+    //     back.setOnClickListener(View.OnClickListener {
+    //         this.finish();
+    //     })
+    //     // return false
+    //     // if (scannerView.flash) {
+    //     //     val item = menu.add(0,
+    //     //             TOGGLE_FLASH, 0, "Flash Off")
+    //     //     item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    //     // } else {
+    //     //     val item = menu.add(0,
+    //     //             TOGGLE_FLASH, 0, "Flash On")
+    //     //     item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    //     // }
+    //     return super.onCreateOptionsMenu(menu,inflater)
+    // }
+
+    // override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    //     if (item.itemId == TOGGLE_FLASH) {
+    //         scannerView.flash = !scannerView.flash
+    //         this.invalidateOptionsMenu()
+    //         return true
+    //     }
+    //     return super.onOptionsItemSelected(item)
+    // }
 
     override fun onResume() {
         super.onResume()

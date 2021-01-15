@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/zhongyi/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/zhongyi/项目/支付/pay_client/pay_plugin/flutter_barcode_reader/example"
+export "FLUTTER_APPLICATION_PATH=/Users/zhongyi/项目/支付/pay_com/flutter_barcode_reader/example"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"

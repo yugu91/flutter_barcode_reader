@@ -3,6 +3,7 @@ package de.mintware.barcode_scan
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,7 +12,7 @@ import android.widget.LinearLayout
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
-
+import android.view.ViewGroup
 class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
     init {
@@ -71,7 +72,7 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
             }
         }
 
-        var fl_my_container = this.findViewById<FrameLayout>(R.id.fl_my_container);
+        var fl_my_container = this.findViewById<ViewGroup>(R.id.fl_my_container);
         fl_my_container.addView(scannerView);
         var lightBT = this.findViewById<LinearLayout>(R.id.scan_light);
         lightBT.setOnClickListener(View.OnClickListener {
@@ -87,17 +88,29 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
 
             var back = this.findViewById<LinearLayout>(R.id.scan_back);
         back.setOnClickListener(View.OnClickListener {
-            val intent = Intent()
-            scannerView?.stopCameraPreview()
-            scannerView?.stopCamera()
-            intent.putExtra(EXTRA_RESULT, "".toByteArray())
-            setResult(RESULT_OK,intent)
-
-//            setResult(RESULT_CANCELED)
-            finish()
+            goBack();
         })
 
         // setContentView(scannerView)
+    }
+
+    fun goBack(){
+        val intent = Intent()
+        scannerView?.stopCameraPreview()
+        scannerView?.stopCamera()
+        intent.putExtra(EXTRA_RESULT, "".toByteArray())
+        setResult(RESULT_OK,intent)
+
+        finish()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            goBack();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+//        return super.onKeyDown(keyCode, event)
     }
 
     // region AppBar menu

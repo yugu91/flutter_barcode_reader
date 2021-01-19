@@ -7,12 +7,12 @@
 
 import Foundation
 import MTBBarcodeScanner
-
+import Flutter
 class BarcodeScannerViewController: UIViewController {
   private var previewView: UIView?
   private var scanRect: ScannerOverlay?
   private var scanner: MTBBarcodeScanner?
-  
+    private var lightImageView:UIImageView!;
   var config: Configuration = Configuration.with {
     $0.strings = [
       "cancel" : "Cancel",
@@ -51,6 +51,10 @@ class BarcodeScannerViewController: UIViewController {
     return device?.hasTorch ?? false
   }
   
+    override func viewWillLayoutSubviews() {
+        self.navigationController?.navigationBar.isHidden = true;
+    }
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -73,14 +77,42 @@ class BarcodeScannerViewController: UIViewController {
                                   previewView: previewView
       )
     }
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: config.strings["cancel"],
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(cancel)
-    )
+//    navigationItem.leftBarButtonItem = UIBarButtonItem(title: config.strings["cancel"],
+//                                                        style: .plain,
+//                                                        target: self,
+//                                                        action: #selector(cancel)
+//    )
+    var top:CGFloat = 0;
+    var bottom:CGFloat = 0;
+    if let window = UIApplication.shared.keyWindow,#available(iOS 11.0, *) {
+        top = window.safeAreaInsets.top;
+        bottom = window.safeAreaInsets.bottom;
+    }
+    let button = UIButton(frame: CGRect(x: 0, y: top + 10, width: 55, height: 55));
+    button.backgroundColor = UIColor.blue;
+    
+    button.addTarget(self, action: #selector(cancel), for: .touchUpInside);
+    
+    let bundle = Bundle(for: BarcodeScannerViewController.self)
+    button.addSubview(UIImageView(image: UIImage(named: "btn_back_w.png",in: bundle,compatibleWith: nil)));
+//    if let image = getImage(name: "btn_back_w.png") {
+//        button.addSubview(UIImageView(image: image));
+//    }
+    
+    let flushBT = UIButton(frame: CGRect(x: UIScreen.main.bounds.size.width / 2 - 55 / 2, y: UIScreen.main.bounds.size.height - bottom - 80, width: 55, height: 65));
+    
+    flushBT.addTarget(self, action: #selector(onToggleFlash), for: .touchUpInside);
+    lightImageView = UIImageView(image: UIImage(named: "ic_light.png",in: bundle,compatibleWith: nil));
+    if !isFlashOn {
+        lightImageView.alpha = 0.5;
+    }
+    flushBT.addSubview(lightImageView);
+    
+    view.addSubview(button);
+    view.addSubview(flushBT);
     updateToggleFlashButton()
   }
-  
+    
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
@@ -177,12 +209,13 @@ class BarcodeScannerViewController: UIViewController {
       return
     }
     
-    let buttonText = isFlashOn ? config.strings["flash_off"] : config.strings["flash_on"]
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: buttonText,
-                                                        style: .plain,
-                                                        target: self,
-                                                        action: #selector(onToggleFlash)
-    )
+    // let buttonText = isFlashOn ? config.strings["flash_off"] : config.strings["flash_on"]
+    // navigationItem.rightBarButtonItem = UIBarButtonItem(title: buttonText,
+    //                                                     style: .plain,
+    //                                                     target: self,
+    //                                                     action: #selector(onToggleFlash)
+    // )
+    lightImageView.alpha = !isFlashOn ? 0.5 : 1;
   }
   
   private func setFlashState(_ on: Bool) {

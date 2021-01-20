@@ -89,7 +89,6 @@ class BarcodeScannerViewController: UIViewController {
         bottom = window.safeAreaInsets.bottom;
     }
     let button = UIButton(frame: CGRect(x: 0, y: top + 10, width: 55, height: 55));
-    button.backgroundColor = UIColor.blue;
     
     button.addTarget(self, action: #selector(cancel), for: .touchUpInside);
     

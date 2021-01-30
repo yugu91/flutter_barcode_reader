@@ -84,6 +84,23 @@ class BarcodeScannerActivity : Activity(), ZXingScannerView.ResultHandler {
                 lightBT.alpha = 0.5f;
         })
 
+        var qrCodeBt = this.findViewById<LinearLayout>(R.id.choose_photo);
+        qrCodeBt.setOnClickListener(View.OnClickListener {
+            val intent = Intent()
+            val builder = Protos.ScanResult.newBuilder()
+
+            builder.let {
+                it.format = Protos.BarcodeFormat.unknown
+                it.rawContent = "qrcode"
+                it.type = Protos.ResultType.Barcode
+            }
+
+            val res = builder.build()
+            intent.putExtra(EXTRA_RESULT, res.toByteArray())
+            setResult(RESULT_OK, intent)
+            finish()
+        })
+
         lightBT.alpha = 0.5f;
 
             var back = this.findViewById<LinearLayout>(R.id.scan_back);

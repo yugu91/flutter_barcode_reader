@@ -44,7 +44,7 @@ class BarcodeScannerViewController: UIViewController {
   }
   
   private var isFlashOn: Bool {
-    return device != nil && (device?.flashMode == AVCaptureDevice.FlashMode.on || device?.torchMode == .on)
+    return device != nil && (device!.flashMode == AVCaptureDevice.FlashMode.on || device!.torchMode == .on)
   }
   
   private var hasTorch: Bool {
@@ -89,11 +89,20 @@ class BarcodeScannerViewController: UIViewController {
         bottom = window.safeAreaInsets.bottom;
     }
     let button = UIButton(frame: CGRect(x: 0, y: top + 10, width: 55, height: 55));
-    
     button.addTarget(self, action: #selector(cancel), for: .touchUpInside);
     
     let bundle = Bundle(for: BarcodeScannerViewController.self)
     button.addSubview(UIImageView(image: UIImage(named: "btn_back_w.png",in: bundle,compatibleWith: nil)));
+    
+    let qrcodeImg = UIButton(frame: CGRect(x:UIScreen.main.bounds.size.width - 55 - 10,y: top + 10,width: 55,height: 55))
+    qrcodeImg.addTarget(self, action: #selector(toQRCode), for: .touchUpInside)
+    let qrcodeIcon = UIImageView(image: UIImage(named: "m_skewm.png",in: bundle,compatibleWith: nil));
+    qrcodeIcon.frame = CGRect(x: 5.5, y: 5.5, width: 44, height: 44);
+    qrcodeIcon.backgroundColor = UIColor.init(red: 255, green: 255, blue: 255, alpha: 40);
+    qrcodeIcon.layer.masksToBounds = true;
+    qrcodeIcon.layer.cornerRadius = 4;
+    qrcodeImg.addSubview(qrcodeIcon);
+    
 //    if let image = getImage(name: "btn_back_w.png") {
 //        button.addSubview(UIImageView(image: image));
 //    }
@@ -102,12 +111,14 @@ class BarcodeScannerViewController: UIViewController {
     
     flushBT.addTarget(self, action: #selector(onToggleFlash), for: .touchUpInside);
     lightImageView = UIImageView(image: UIImage(named: "ic_light.png",in: bundle,compatibleWith: nil));
+
     if !isFlashOn {
         lightImageView.alpha = 0.5;
     }
     flushBT.addSubview(lightImageView);
     
     view.addSubview(button);
+    view.addSubview(qrcodeImg);
     view.addSubview(flushBT);
     updateToggleFlashButton()
   }
@@ -198,6 +209,13 @@ class BarcodeScannerViewController: UIViewController {
       $0.format = .unknown
     });
   }
+    
+    @objc private func toQRCode() {
+        self.scanResult(ScanResult.with {
+          $0.rawContent = "qrcode"
+  //        $0.format = .unknown
+        })
+    }
   
   @objc private func onToggleFlash() {
     setFlashState(!isFlashOn)
